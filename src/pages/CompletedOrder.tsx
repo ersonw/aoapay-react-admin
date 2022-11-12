@@ -195,7 +195,7 @@ class CompletedOrder extends React.Component {
                                     <span style={{ marginLeft: 8 }}>
                                         {hasSelected ? `选择 ${selectedRowKeys.length} 条` : ''}
                                     </span>
-                                    { (this.state.start || this.state.end) && (
+                                    { this.state.count > 0 && (
                                         <span style={{margin: 'auto 16px'}}>
                                             当前条件总计：{this.state.count} 元
                                         </span>
