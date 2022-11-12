@@ -90,7 +90,7 @@ class ProcessedOrder extends React.Component {
             dataIndex: 'tradeTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         },
         {
@@ -110,7 +110,7 @@ class ProcessedOrder extends React.Component {
             dataIndex: 'addTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         },
         {
@@ -118,7 +118,7 @@ class ProcessedOrder extends React.Component {
             dataIndex: 'updateTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         },
         {

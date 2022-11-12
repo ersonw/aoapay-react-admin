@@ -9,6 +9,7 @@ import SiderMenu from './SiderMenu';
 import { useAlita } from 'redux-alita';
 import { useSwitch } from '../utils/hooks';
 import { usePrevious } from 'ahooks';
+import logo from '../images/aoa-logo.png';
 const { Sider } = Layout;
 
 type SiderCustomProps = RouteComponentProps<any> & {
@@ -79,7 +80,10 @@ const SiderCustom = (props: SiderCustomProps) => {
             style={{ overflowY: 'auto' }}
             className="sider-custom"
         >
-            <div className="logo" />
+            {/*<div className="logo" />*/}
+            <div className="logo" style={{ backgroundColor: 'transparent', marginBottom: '10vh' }}>
+                <img src={logo} alt="" style={{ width: '80%', backgroundColor: 'transparent' }} />
+            </div>
             <SiderMenu
                 menus={[...routes.menus, ...smenus]}
                 onClick={menuClick}

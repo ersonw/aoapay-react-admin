@@ -133,6 +133,20 @@ export const setUserChange = async (data: any) => {
         return null;
     }
 };
+export const setUserAdmin = async (data: any) => {
+    try {
+        return await get({ url: config.SERVER_USER_ADMIN, data: data });
+    } catch (e) {
+        return null;
+    }
+};
+export const setUserSuper = async (data: any) => {
+    try {
+        return await get({ url: config.SERVER_USER_SUPER, data: data });
+    } catch (e) {
+        return null;
+    }
+};
 export const setUserAdd = async (data: any) => {
     try {
         return await post({ url: config.SERVER_USER_ADD, data: data });

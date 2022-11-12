@@ -17,7 +17,7 @@ export function parseQuery() {
 export const checkLogin = (permits: any): boolean => {
     // console.log(getCookie('token') === '');
     // console.log(permits);
-    return getCookie('token') !== undefined || getCookie('token') !== '' || !!permits;
+    return getCookie('token') !== undefined && getCookie('token') !== '';
 };
 // || !!permits;
 // (process.env.NODE_ENV === 'production' && !!permits) || process.env.NODE_ENV === 'development';

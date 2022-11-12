@@ -10,7 +10,7 @@ import {
     setChannelEnabled,
     setChannelEnabledAll,
     setChannelAdd,
-    setChannelDeleteAll,
+    setChannelDeleteAll, setUserEnabled,
 } from '../service';
 import BreadcrumbCustom from '../components/widget/BreadcrumbCustom';
 import { ColumnProps } from 'antd/lib/table';
@@ -84,13 +84,12 @@ class Channel extends React.Component {
             width: 100,
             render: (text: any, record: any, index: Number) => {
                 return (
-                    <button
-                        type={'submit'}
-                        style={{ color: (text as boolean) ? 'green' : 'gray' }}
-                        onClick={() => {
+                    <Switch
+                        checked={text}
+                        onChange={() => {
                             return Modal.confirm({
                                 mask: true,
-                                title: `${!(text as boolean) ? '启用' : '禁用'}充值渠道[${
+                                title: `${!(text as boolean) ? '启用' : '禁用'}渠道[${
                                     record.title
                                 }]`,
                                 onOk: () => {
@@ -111,9 +110,7 @@ class Channel extends React.Component {
                                 okText: '继续',
                             });
                         }}
-                    >
-                        {(text as boolean) ? '已启用' : '未启用'}
-                    </button>
+                    />
                 );
             },
         },
@@ -127,7 +124,7 @@ class Channel extends React.Component {
             dataIndex: 'addTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         },
         {
@@ -135,7 +132,7 @@ class Channel extends React.Component {
             dataIndex: 'updateTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         },
         {

@@ -186,7 +186,7 @@ class Client extends React.Component<any> {
             dataIndex: 'addTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         });
         this.columns.push({
@@ -194,7 +194,7 @@ class Client extends React.Component<any> {
             dataIndex: 'updateTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         });
         if (!(auth as any).admin) {

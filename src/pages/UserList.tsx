@@ -4,7 +4,15 @@ import { Button, Card, Col, Input, message, Modal, Row, Select, Switch, Table } 
 import { SnippetsOutlined } from '@ant-design/icons';
 import copyToClipboard from 'copy-to-clipboard';
 import { ColumnProps } from 'antd/lib/table';
-import { getUser, setUserChange, setUserEnabled, setUserAdd, setUserDeleteAll } from '../service';
+import {
+    getUser,
+    setUserChange,
+    setUserEnabled,
+    setUserAdd,
+    setUserDeleteAll,
+    setUserAdmin,
+    setUserSuper
+} from '../service';
 import moment from 'moment/moment';
 const { Option } = Select;
 
@@ -84,7 +92,7 @@ class UserList extends React.Component<any> {
                 fixed: 'left',
             },
             {
-                title: '直属',
+                title: '开户人',
                 dataIndex: 'superiorName',
                 width: 100,
                 key: 'superiorName',
@@ -96,10 +104,9 @@ class UserList extends React.Component<any> {
                 width: 100,
                 render: (text: any, record: any, index: Number) => {
                     return (
-                        <button
-                            type={'submit'}
-                            style={{ color: (text as boolean) ? 'green' : 'gray' }}
-                            onClick={() => {
+                        <Switch
+                            checked={text}
+                            onChange={() => {
                                 return Modal.confirm({
                                     mask: true,
                                     title: `${!(text as boolean) ? '启用' : '禁用'}用户[${
@@ -123,43 +130,133 @@ class UserList extends React.Component<any> {
                                     okText: '继续',
                                 });
                             }}
-                        >
-                            {(text as boolean) ? '已启用' : '未启用'}
-                        </button>
+                        />
                     );
                 },
             },
-            {
+        ];
+        if (auth.admin || auth.superAdmin){
+            this.columns.push({
                 title: '管理员',
                 dataIndex: 'admin',
                 width: 180,
                 render: (text: any, record: any, index: Number) => {
-                    return <span>{text === true ? '是' : '否'}</span>;
+                    return (
+                        <Switch
+                            checked={text}
+                            onChange={() => {
+                                return Modal.confirm({
+                                    mask: true,
+                                    title: `${!(text as boolean) ? '赋予管理员权限给' : '取消管理员权限'} 用户[${
+                                        record.username
+                                    }]`,
+                                    onOk: () => {
+                                        this.setState({ loading: true });
+                                        setUserAdmin({ id: record.id }).then((data) => {
+                                            if (data !== undefined && data !== null) {
+                                                const list = this.state.data;
+                                                this.setState({ data: [] });
+                                                const index = list.findIndex(
+                                                    (v: any) => v.id === data.id
+                                                );
+                                                list.splice(index, 1, data as never);
+                                                this.setState({ data: list, loading: false });
+                                            }
+                                        });
+                                    },
+                                    cancelText: '返回',
+                                    okText: '继续',
+                                });
+                            }}
+                        />
+                    );
                 },
-            },
-            {
+            });
+        }
+        if (auth.superAdmin) {
+            this.columns.push({
                 title: '超级管理员',
                 dataIndex: 'superAdmin',
                 width: 180,
                 render: (text: any, record: any, index: Number) => {
-                    return <span>{text === true ? '是' : '否'}</span>;
+                    return (
+                        <Switch
+                            checked={text}
+                            onChange={() => {
+                                return Modal.confirm({
+                                    mask: true,
+                                    title: `${!(text as boolean) ? '赋予管理员权限给' : '取消管理员权限'} 用户[${
+                                        record.username
+                                    }]`,
+                                    onOk: () => {
+                                        this.setState({ loading: true });
+                                        setUserSuper({ id: record.id }).then((data) => {
+                                            if (data !== undefined && data !== null) {
+                                                const list = this.state.data;
+                                                this.setState({ data: [] });
+                                                const index = list.findIndex(
+                                                    (v: any) => v.id === data.id
+                                                );
+                                                list.splice(index, 1, data as never);
+                                                this.setState({ data: list, loading: false });
+                                            }
+                                        });
+                                    },
+                                    cancelText: '返回',
+                                    okText: '继续',
+                                });
+                            }}
+                        />
+                    );
                 },
-            },
-        ];
+            });
+        }
         this.columns.push({
-            title: '角色名',
-            dataIndex: 'rolesId',
+            title: '备注',
+            dataIndex: 'remark',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return <span>{this.switchRoles(text)}</span>;
+                return <span>{text}</span>;
             },
         });
+        this.columns.push({
+            title: '最后上线IP',
+            dataIndex: 'ip',
+            width: 180,
+            render: (text: any, record: any, index: Number) => {
+                return <span>{text}</span>;
+            },
+        });
+        this.columns.push({
+            title: '最后上线域名',
+            dataIndex: 'serverName',
+            width: 180,
+            render: (text: any, record: any, index: Number) => {
+                return <span>{text}</span>;
+            },
+        });
+        this.columns.push({
+            title: '最后上线时间',
+            dataIndex: 'loginTime',
+            width: 180,
+            render: (text: any, record: any, index: Number) => {
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
+            },
+        });
+        // this.columns.push({
+        //     title: '角色名',
+        //     dataIndex: 'rolesId',
+        //     width: 180,
+        //     render: (text: any, record: any, index: Number) => {
+        //         return <span>{this.switchRoles(text)}</span>;
+        //     },
+        // });
         this.columns.push({
             title: '添加时间',
             dataIndex: 'addTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         });
         this.columns.push({
@@ -167,24 +264,35 @@ class UserList extends React.Component<any> {
             dataIndex: 'updateTime',
             width: 180,
             render: (text: any, record: any, index: Number) => {
-                return moment(text).format('YYYY-MM-DD HH:mm:ss');
+                if (text > 0) return moment(text).format('YYYY-MM-DD HH:mm:ss');
             },
         });
         this.columns.push({
             title: '操作',
             key: 'operation',
             fixed: 'right',
-            width: 100,
+            width: 200,
             render: (text: any, record: any, index: Number) => {
                 // console.log(record);
                 return (
-                    <Button
-                        disabled={record.status as boolean}
-                        style={{ color: 'red' }}
-                        onClick={() => this.onChangePassword(record)}
-                    >
-                        重置密码
-                    </Button>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Button
+                            disabled={record.status as boolean}
+                            style={{ color: 'gray' }}
+                            onClick={() => {
+                                this.setState({ record: { ...record}, showModal: true})
+                            }}
+                        >
+                            修改信息
+                        </Button>
+                        <Button
+                            disabled={record.status as boolean}
+                            style={{ color: 'red' }}
+                            onClick={() => this.onChangePassword(record)}
+                        >
+                            重置密码
+                        </Button>
+                    </div>
                 );
             },
         });
@@ -224,7 +332,7 @@ class UserList extends React.Component<any> {
         this.setState({ record: {} });
     }
     onAdd() {
-        if ((this.state.auth as any).superAdmin) this.setState({ showModal: true, record: {} });
+        if ((this.state.auth as any).superAdmin || (this.state.auth as any).admin) this.setState({ showModal: true, record: {} });
     }
     onChangeInput(key: string, value: any) {
         let record = this.state.record;
@@ -270,7 +378,7 @@ class UserList extends React.Component<any> {
             style: {
                 margin: '30vh auto',
             },
-            title: `是否添加${(this.state.record as any).username} 为：${
+            title: `是否${(this.state.record as any).id !== undefined?'修改':'添加'}${(this.state.record as any).username} 为：${
                 (this.state.record as any).superAdmin
                     ? '超级管理员'
                     : (this.state.record as any).admin
@@ -284,10 +392,15 @@ class UserList extends React.Component<any> {
                     // console.log(value);
                     if (value !== null) {
                         const { password } = value;
-                        this.showPasswordResult(password);
                         const { data } = this.state;
                         this.setState({ data: [] });
-                        data.unshift(value as never);
+                        const index = data.findIndex((v: any) => v.id === value.id);
+                        if (index > -1){
+                            data.splice(index, 1,(value as never));
+                        }else {
+                            data.unshift(value as never);
+                            this.showPasswordResult(password);
+                        }
                         this.setState({ data: data });
                     }
                     this.setState({ showModalLoading: false, showModal: false });
@@ -399,31 +512,33 @@ class UserList extends React.Component<any> {
                                                 }}
                                             />
                                         </div>
-                                        <div
-                                            style={{
-                                                margin: '9px 6px',
-                                                justifyContent: 'fix-center',
-                                                alignItems: 'center',
-                                                width: '35%',
-                                            }}
-                                        >
-                                            <span>是否超级管理员:</span>
-                                            <p />
-                                            <Switch
-                                                disabled={!(this.state.auth as any).superAdmin}
-                                                checked={(this.state.record as any).superAdmin}
-                                                onChange={(e) => {
-                                                    const { record } = this.state;
-                                                    (record as any).superAdmin = e;
-                                                    if (e) {
-                                                        (record as any).admin = false;
-                                                    }
-                                                    this.setState({
-                                                        record: { ...record },
-                                                    });
+                                        { (this.state.auth as any).superAdmin && (
+                                            <div
+                                                style={{
+                                                    margin: '9px 6px',
+                                                    justifyContent: 'fix-center',
+                                                    alignItems: 'center',
+                                                    width: '35%',
                                                 }}
-                                            />
-                                        </div>
+                                            >
+                                                <span>是否超级管理员:</span>
+                                                <p />
+                                                <Switch
+                                                    disabled={!(this.state.auth as any).superAdmin}
+                                                    checked={(this.state.record as any).superAdmin}
+                                                    onChange={(e) => {
+                                                        const { record } = this.state;
+                                                        (record as any).superAdmin = e;
+                                                        if (e) {
+                                                            (record as any).admin = false;
+                                                        }
+                                                        this.setState({
+                                                            record: { ...record },
+                                                        });
+                                                    }}
+                                                />
+                                            </div>
+                                        )}
                                         <div
                                             style={{
                                                 margin: '9px 6px',
@@ -518,16 +633,18 @@ class UserList extends React.Component<any> {
                                     >
                                         刷新列表
                                     </Button>
+                                    {((this.state.auth as any).admin || (this.state.auth as any).superAdmin) && (
+                                        <Button
+                                            type="primary"
+                                            onClick={this.onAdd.bind(this)}
+                                            disabled={loading}
+                                            loading={loading}
+                                        >
+                                            添加用户
+                                        </Button>
+                                    )}
                                     {(this.state.auth as any).superAdmin && (
                                         <>
-                                            <Button
-                                                type="primary"
-                                                onClick={this.onAdd.bind(this)}
-                                                disabled={loading}
-                                                loading={loading}
-                                            >
-                                                添加用户
-                                            </Button>
                                             <Button
                                                 type="ghost"
                                                 onClick={this.onDeleteAll.bind(this)}
