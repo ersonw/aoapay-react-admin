@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Layout, notification } from 'antd';
+import {
+    Layout,
+    // notification,
+} from 'antd';
 import umbrella from 'umbrella-storage';
 import { useAlita } from 'redux-alita';
 import Routes from './routes';
 import SiderCustom from './components/SiderCustom';
 import HeaderCustom from './components/HeaderCustom';
-import { ThemePicker, Copyright } from './components/widget';
+import {
+    // ThemePicker,
+    Copyright,
+} from './components/widget';
 import { checkLogin } from './utils';
 import { fetchMenu } from './service';
 import classNames from 'classnames';
-import { SmileOutlined } from '@ant-design/icons';
+// import { SmileOutlined } from '@ant-design/icons';
 
 const { Content, Footer } = Layout;
 
@@ -36,44 +42,44 @@ function handleResize(handler: (isMobile: boolean) => void) {
     window.addEventListener('resize', resizeListener.bind(null, handler));
 }
 
-function openFNotification() {
-    const openNotification = () => {
-        notification.open({
-            message: '博主-yezihaohao',
-            description: (
-                <div>
-                    <p>
-                        GitHub地址：
-                        <a
-                            href="https://github.com/yezihaohao"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            https://github.com/yezihaohao
-                        </a>
-                    </p>
-                    <p>
-                        博客地址：
-                        <a
-                            href="https://yezihaohao.github.io/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            https://yezihaohao.github.io/
-                        </a>
-                    </p>
-                </div>
-            ),
-            icon: <SmileOutlined style={{ color: 'red' }} />,
-            duration: 0,
-        });
-        umbrella.setLocalStorage('hideBlog', true);
-    };
-    const storageFirst = umbrella.getLocalStorage('hideBlog');
-    if (!storageFirst) {
-        openNotification();
-    }
-}
+// function openFNotification() {
+//     const openNotification = () => {
+//         notification.open({
+//             message: '博主-yezihaohao',
+//             description: (
+//                 <div>
+//                     <p>
+//                         GitHub地址：
+//                         <a
+//                             href="https://github.com/yezihaohao"
+//                             target="_blank"
+//                             rel="noopener noreferrer"
+//                         >
+//                             https://github.com/yezihaohao
+//                         </a>
+//                     </p>
+//                     <p>
+//                         博客地址：
+//                         <a
+//                             href="https://yezihaohao.github.io/"
+//                             target="_blank"
+//                             rel="noopener noreferrer"
+//                         >
+//                             https://yezihaohao.github.io/
+//                         </a>
+//                     </p>
+//                 </div>
+//             ),
+//             icon: <SmileOutlined style={{ color: 'red' }} />,
+//             duration: 0,
+//         });
+//         umbrella.setLocalStorage('hideBlog', true);
+//     };
+//     const storageFirst = umbrella.getLocalStorage('hideBlog');
+//     if (!storageFirst) {
+//         openNotification();
+//     }
+// }
 
 /**
  * 获取服务端异步菜单
@@ -105,7 +111,7 @@ const App = (props: AppProps) => {
         setAlita('responsive', { isMobile: checkIsMobile() });
 
         handleResize((isMobile: boolean) => setAlita('responsive', { isMobile }));
-        openFNotification();
+        // openFNotification();
         fetchSmenu((smenus: any[]) => setAlita('smenus', smenus));
     }, [setAlita]);
 
@@ -117,7 +123,7 @@ const App = (props: AppProps) => {
             {!responsive.isMobile && checkLogin(auth.permissions) && (
                 <SiderCustom collapsed={collapsed} />
             )}
-            <ThemePicker />
+            {/*<ThemePicker />*/}
             <Layout
                 className={classNames('app_layout', { 'app_layout-mobile': responsive.isMobile })}
             >

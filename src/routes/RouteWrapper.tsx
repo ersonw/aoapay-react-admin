@@ -9,9 +9,11 @@
 import React, { useMemo } from 'react';
 import DocumentTitle from 'react-document-title';
 import queryString from 'query-string';
+import umbrella from 'umbrella-storage';
 
 const RouteWrapper = (props: any) => {
     let { Comp, route, ...restProps } = props;
+    const auth = umbrella.getLocalStorage('user');
     /** useMemo 缓存query，避免每次生成生的query */
     const queryMemo = useMemo(() => {
         const queryReg = /\?\S*/g;
@@ -35,6 +37,7 @@ const RouteWrapper = (props: any) => {
         const merge = {
             ...restProps,
             query: queryMemo,
+            auth,
         };
         return merge;
     };

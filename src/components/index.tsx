@@ -31,6 +31,16 @@ import MultipleMenu from './extension/MultipleMenu';
 import Sub1 from './smenu/Sub1';
 import Sub2 from './smenu/Sub2';
 import Env from './env';
+import BasicOrder from '../pages/BasicOrder';
+import ProcessedOrder from '../pages/ProcessedOrder';
+import CompletedOrder from '../pages/CompletedOrder';
+import Channel from '../pages/Channel';
+import UserList from '../pages/UserList';
+import RoleList from '../pages/RoleList';
+import RolesList from '../pages/RolesList';
+import RouterList from '../pages/RouterList';
+import Client from '../pages/Client';
+import ShortLink from '../pages/ShortLink';
 
 const WysiwygBundle = Loadable({
     // 按需加载富文本配置
@@ -39,6 +49,16 @@ const WysiwygBundle = Loadable({
 });
 
 export default {
+    ShortLink,
+    RoleList,
+    Client,
+    RouterList,
+    RolesList,
+    UserList,
+    Channel,
+    BasicOrder,
+    CompletedOrder,
+    ProcessedOrder,
     BasicTable,
     AdvancedTable,
     AsynchronousTable,
