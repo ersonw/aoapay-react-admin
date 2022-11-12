@@ -2,14 +2,18 @@
  * Created by hao.cheng on 2017/4/16.
  */
 import React from 'react';
-import { Table, Button, Row, Col, Card, Input, message, Modal } from 'antd';
+import {Table, Button, Row, Col, Card, Input, message, Modal, DatePicker} from 'antd';
 import { confirmBasicOrder, getProcessedOrder } from '../service';
 import BreadcrumbCustom from '../components/widget/BreadcrumbCustom';
 import { ColumnProps } from 'antd/lib/table';
 import moment from 'moment';
 import copyToClipboard from 'copy-to-clipboard';
 import { SnippetsOutlined } from '@ant-design/icons';
-moment.locale('zh-cn');
+import zh_CN from 'antd/lib/date-picker/locale/zh_CN';
+import {RangeValue} from 'rc-picker/lib/interface'
+import { Moment } from 'moment';
+const { RangePicker } = DatePicker;
+moment.locale('zh');
 
 class ProcessedOrder extends React.Component {
     state = {
@@ -18,8 +22,11 @@ class ProcessedOrder extends React.Component {
         data: [],
         currentPage: 1,
         total: 1,
+        count: 0,
         pageSize: 30,
         title: undefined,
+        start: undefined,
+        end: undefined,
         showModalLoading: false,
         showModal: false,
         record: {
@@ -171,11 +178,14 @@ class ProcessedOrder extends React.Component {
             title: this.state.title,
             page: this.state.currentPage,
             limit: this.state.pageSize,
-        }).then(({ list, total }: { list: any; total: bigint }) => {
+            start: this.state.start,
+            end: this.state.end,
+        }).then(({ list, total, count }: { list: any; total: bigint, count: bigint }) => {
             this.setState({
                 loading: false,
                 data: list,
                 total: total,
+                count: count,
             });
         });
     };
@@ -297,18 +307,34 @@ class ProcessedOrder extends React.Component {
                                         placeholder="订单编号或者订单号"
                                         value={this.state.title}
                                         onChange={this.onSearchChange.bind(this)}
-                                        suffix={
-                                            <Button
-                                                type="primary"
-                                                onClick={this.start.bind(this)}
-                                                disabled={loading}
-                                            >
-                                                搜索
-                                            </Button>
-                                        }
                                         onKeyDown={this.onKeyDown.bind(this)}
                                         disabled={loading}
                                     />
+                                    <RangePicker
+                                        allowEmpty={[true,true]}
+                                        format="YYYY-MM-DD HH:mm"
+                                        showTime = {{ defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')] }}
+                                        allowClear
+                                        inputReadOnly
+                                        locale={zh_CN}
+                                        picker={'date'}
+                                        onChange={(e: RangeValue<Moment>)=>{
+                                            if (e === undefined || e === null) {
+                                                this.setState({start: undefined, end: undefined});
+                                                return;
+                                            }
+                                            this.setState({start: e[0]?.valueOf(), end: e[1]?.valueOf()});
+                                        }}
+                                        value={[(this.state.start && moment(this.state.start)),(this.state.end && moment(this.state.end))] as any}
+                                    />
+                                    <Button
+                                        style={{margin: 'auto 16px'}}
+                                        type="primary"
+                                        onClick={this.start.bind(this)}
+                                        disabled={loading}
+                                    >
+                                        搜索
+                                    </Button>
                                     <Button
                                         type="primary"
                                         onClick={this.onRefresh.bind(this)}
@@ -320,6 +346,11 @@ class ProcessedOrder extends React.Component {
                                     <span style={{ marginLeft: 8 }}>
                                         {hasSelected ? `选择 ${selectedRowKeys.length} 条` : ''}
                                     </span>
+                                    { (this.state.start || this.state.end) && (
+                                        <span style={{margin: 'auto 16px'}}>
+                                            当前条件总计：{this.state.count} 元
+                                        </span>
+                                    )}
                                 </div>
                                 <Table
                                     rowKey={'id'}

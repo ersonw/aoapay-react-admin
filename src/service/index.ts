@@ -203,25 +203,25 @@ export const setChannelDeleteAll = async (ids: any) => {
         return [];
     }
 };
-export const getBasicOrder = async ({ title, page, limit }: any) => {
+export const getBasicOrder = async (data: any) => {
     try {
-        return await get({ url: config.SERVER_BASIC_ORDER, data: { title, page, limit } });
+        return await get({ url: config.SERVER_BASIC_ORDER, data: data });
     } catch (e) {
         return { list: [], total: 0 };
     }
 };
-export const getCompletedOrder = async ({ title, page, limit }: any) => {
+export const getCompletedOrder = async (data: any) => {
     try {
-        return await get({ url: config.SERVER_COMPONENT_ORDER, data: { title, page, limit } });
+        return await get({ url: config.SERVER_COMPONENT_ORDER, data: data });
     } catch (e) {
-        return { list: [], total: 0 };
+        return { list: [], total: 0,count: 0, };
     }
 };
-export const getProcessedOrder = async ({ title, page, limit }: any) => {
+export const getProcessedOrder = async (data: any) => {
     try {
-        return await get({ url: config.SERVER_PROCESSED_ORDER, data: { title, page, limit } });
+        return await get({ url: config.SERVER_PROCESSED_ORDER, data: data });
     } catch (e) {
-        return { list: [], total: 0 };
+        return { list: [], total: 0, count: 0, };
     }
 };
 export const confirmBasicOrder = async ({ id }: any) => {
