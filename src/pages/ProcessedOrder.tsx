@@ -56,6 +56,13 @@ class ProcessedOrder extends React.Component {
             fixed: 'left',
         },
         {
+            title: '支付渠道',
+            dataIndex: 'channel',
+            width: 180,
+            key: 'channel',
+            fixed: 'left',
+        },
+        {
             title: '提交金额',
             dataIndex: 'money',
             width: 100,

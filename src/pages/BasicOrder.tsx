@@ -43,6 +43,13 @@ class BasicOrder extends React.Component {
             fixed: 'left',
         },
         {
+            title: '支付渠道',
+            dataIndex: 'channel',
+            width: 180,
+            key: 'channel',
+            fixed: 'left',
+        },
+        {
             title: '订单号',
             dataIndex: 'outTradeNo',
             width: 180,
