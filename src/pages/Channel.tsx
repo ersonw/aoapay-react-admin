@@ -262,7 +262,7 @@ class Channel extends React.Component {
                             this.setState({ data: [] });
                             const index = list.findIndex((v: any) => v.id === data.id);
                             list.splice(index, 1, data as never);
-                            this.setState({ showModal: false, data: list });
+                            this.setState({ showModal: false, record: {}, data: list });
                             this.restRecord();
                         }
                         this.setState({ showModalLoading: false });
@@ -273,7 +273,7 @@ class Channel extends React.Component {
                             const list = this.state.data;
                             this.setState({ data: [] });
                             list.unshift(data as never);
-                            this.setState({ showModal: false, data: list });
+                            this.setState({ showModal: false, record: {}, data: list });
                             this.restRecord();
                         }
                         this.setState({ showModalLoading: false });
@@ -281,7 +281,7 @@ class Channel extends React.Component {
                 }
             },
             onCancel: () => {
-                this.setState({ showModalLoading: false });
+                this.setState({ showModalLoading: false,record: {}, });
             },
             okText: '继续提交',
             cancelText: '取消提交',
@@ -329,7 +329,7 @@ class Channel extends React.Component {
         return '未知';
     }
     onModalCancel(event: any) {
-        this.setState({ showModal: false });
+        this.setState({ showModal: false, record: {} });
         this.restRecord();
     }
     onChangeAll() {
