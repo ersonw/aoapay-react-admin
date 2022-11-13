@@ -60,7 +60,7 @@ class Channel extends React.Component {
             dataIndex: 'channel',
             width: 100,
             render: (text: any, record: any, index: Number) => {
-                return <span>{this.channels[record.channel]}</span>;
+                return <span>{this.channels[text]}</span>;
             },
         },
         {
@@ -290,7 +290,7 @@ class Channel extends React.Component {
     type = [
         {
             name: '银联卡',
-            key: 'unionpay',
+            key: 'union',
         },
         {
             name: '支付宝',
@@ -299,6 +299,26 @@ class Channel extends React.Component {
         {
             name: '微信支付',
             key: 'wxpay',
+        },
+        {
+            name: 'QQ支付',
+            key: 'qqpay',
+        },
+        {
+            name: '天猫支付',
+            key: 'tianmao',
+        },
+        {
+            name: '淘宝支付',
+            key: 'taobao',
+        },
+        {
+            name: '云闪付',
+            key: 'yunshanfu',
+        },
+        {
+            name: '京东支付',
+            key: 'jingdong',
         },
     ];
     channels = ['未知', '艺博支付', '蒲公英支付'];
