@@ -477,7 +477,7 @@ class Channel extends React.Component {
                                             >
                                                 <span>第三方系统:</span>
                                                 <Select
-                                                    defaultValue={
+                                                    value={
                                                         (this.state.record as any).channel
                                                     }
                                                     style={{ width: 120, marginRight: 10 }}
@@ -583,14 +583,11 @@ class Channel extends React.Component {
                                                 >
                                                     <span>通道类型:</span>
                                                     <Select
-                                                        defaultValue={
+                                                        value={
                                                             (this.state.record as any).type
                                                         }
                                                         style={{ width: 120, marginRight: 10 }}
                                                         onChange={(val: any) => {
-                                                            // notification.config({
-                                                            //     placement: val,
-                                                            // });
                                                             this.onChangeInput('type', val);
                                                         }}
                                                     >

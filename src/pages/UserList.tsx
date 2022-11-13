@@ -570,7 +570,7 @@ class UserList extends React.Component<any> {
                                         >
                                             <span style={{ marginRight: '3px' }}>权限角色:</span>
                                             <Select
-                                                defaultValue={(this.state.record as any).rolesId}
+                                                value={(this.state.record as any).rolesId}
                                                 style={{ width: 120, marginRight: 10 }}
                                                 onChange={(val: any) => {
                                                     // notification.config({
