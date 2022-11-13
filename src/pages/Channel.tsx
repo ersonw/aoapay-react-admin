@@ -139,17 +139,32 @@ class Channel extends React.Component {
             title: '操作',
             key: 'operation',
             fixed: 'right',
-            width: 100,
+            width: 200,
             render: (text: any, record: any, index: Number) => {
                 // console.log(record);
                 return (
-                    <Button
-                        disabled={record.status as boolean}
-                        style={{ color: 'red' }}
-                        onClick={() => this.handlerModal(record, index)}
-                    >
-                        修改参数
-                    </Button>
+                    <div style={{justifyContent:'center', alignItems: 'center',display:'flex'}}>
+                        <Button
+                            disabled={record.status as boolean}
+                            style={{ color: 'red' }}
+                            onClick={() => this.handlerModal(record, index)}
+                        >
+                            修改参数
+                        </Button>
+                        { this.state.auth.superAdmin && (
+                            <Button
+                                disabled={record.status as boolean}
+                                style={{ color: 'gray' }}
+                                onClick={() => {
+                                    const r = { ...record};
+                                    r.id = undefined;
+                                    this.setState({record: r, showModal: true});
+                                }}
+                            >
+                                复制此处
+                            </Button>
+                        )}
+                    </div>
                 );
             },
         },
@@ -539,17 +554,37 @@ class Channel extends React.Component {
                                     </div>
                                     <div
                                         style={{
-                                            margin: '9px 6px',
-                                            justifyContent: 'fix-center',
-                                            alignItems: 'center',
+                                            display: 'flex',
                                         }}
                                     >
-                                        <span>是否自定义金额:</span>
-                                        <p />
-                                        <Switch
-                                            checked={(this.state.record as any).voluntarily}
-                                            onChange={(e) => this.onChangeInput('voluntarily', e)}
-                                        />
+                                        <div
+                                            style={{
+                                                margin: '9px 6px',
+                                                justifyContent: 'fix-center',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <span>是否启用:</span>
+                                            <p />
+                                            <Switch
+                                                checked={(this.state.record as any).enabled}
+                                                onChange={(e) => this.onChangeInput('enabled', e)}
+                                            />
+                                        </div>
+                                        <div
+                                            style={{
+                                                margin: '9px 6px',
+                                                justifyContent: 'fix-center',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <span>是否自定义金额:</span>
+                                            <p />
+                                            <Switch
+                                                checked={(this.state.record as any).voluntarily}
+                                                onChange={(e) => this.onChangeInput('voluntarily', e)}
+                                            />
+                                        </div>
                                     </div>
                                     {(this.state.auth as any).superAdmin && (
                                         <>
