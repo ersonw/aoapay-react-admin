@@ -41,6 +41,7 @@ import RolesList from '../pages/RolesList';
 import RouterList from '../pages/RouterList';
 import Client from '../pages/Client';
 import ShortLink from '../pages/ShortLink';
+import UserInfo from "../pages/UserInfo";
 
 const WysiwygBundle = Loadable({
     // 按需加载富文本配置
@@ -49,6 +50,7 @@ const WysiwygBundle = Loadable({
 });
 
 export default {
+    UserInfo,
     ShortLink,
     RoleList,
     Client,

@@ -39,6 +39,7 @@ export const get = ({ url, msg = '接口异常', config, data }: IFRequestParam)
                     message.success(res.data.message);
                 } else if (res.data.code === 201) {
                     setCookie('token', '');
+                    message.error(res.data.message);
                 } else {
                     message.error(res.data.message);
                     throw new Error(res.data.code);

@@ -498,7 +498,7 @@ class UserList extends React.Component<any> {
                                             <span>是否管理员:</span>
                                             <p />
                                             <Switch
-                                                disabled={!(this.state.auth as any).superAdmin}
+                                                disabled={!(this.state.auth as any).superAdmin || !(this.state.auth as any).admin}
                                                 checked={(this.state.record as any).admin}
                                                 onChange={(e) => {
                                                     const { record } = this.state;

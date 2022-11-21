@@ -154,6 +154,20 @@ export const setUserAdd = async (data: any) => {
         return null;
     }
 };
+export const setUserRemark = async (data: any) => {
+    try {
+        return await post({ url: config.SERVER_USER_REMARK, data: data });
+    } catch (e) {
+        return null;
+    }
+};
+export const setUserLogout = async () => {
+    try {
+        return await get({ url: config.SERVER_USER_LOGOUT, });
+    } catch (e) {
+        return null;
+    }
+};
 export const setUserDeleteAll = async (ids: any) => {
     try {
         return await post({ url: config.SERVER_USER_REMOVE, data: { ids } });
