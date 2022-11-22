@@ -100,6 +100,7 @@ class CompletedOrder extends React.Component {
             currentPage: current,
             pageSize: size,
         });
+        this.start();
     }
     start = () => {
         this.setState({ loading: true });

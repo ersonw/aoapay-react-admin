@@ -145,7 +145,7 @@ class BasicOrder extends React.Component {
             currentPage: current,
             pageSize: size,
         });
-        // this.start();
+        this.start();
     }
     start = () => {
         this.setState({ loading: true });
