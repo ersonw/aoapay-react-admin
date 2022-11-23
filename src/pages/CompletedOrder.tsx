@@ -42,6 +42,13 @@ class CompletedOrder extends React.Component {
             fixed: 'left',
         },
         {
+            title: '订单号',
+            dataIndex: 'outTradeNo',
+            width: 180,
+            key: 'outTradeNo',
+            fixed: 'left',
+        },
+        {
             title: '提交金额',
             dataIndex: 'money',
             width: 100,
